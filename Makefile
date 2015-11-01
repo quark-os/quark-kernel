@@ -1,5 +1,3 @@
-CC = i686-elf-gcc
-CFLAGS = -Os -s -nostdlib -ffreestanding -T linker.ld -lgcc -I.
 platform = i386
 objects := quark.o \
 	boot/entry.o \

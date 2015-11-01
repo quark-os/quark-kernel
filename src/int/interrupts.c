@@ -7,9 +7,13 @@ uint64_t encodeInterrupt(uint32_t offset);
 
 void loadIDT(uint16_t, void*);
 
-void _genericISR();
+extern void _picinit();
 
-void _syscall();
+extern void _genericISR();
+
+extern void _int_preempt();
+
+extern void _syscall();
 
 void setupInterrupts()
 {
@@ -19,7 +23,9 @@ void setupInterrupts()
 		writeInterrupt(i, encodeInterrupt((uint32_t) _genericISR));
 	}
 	writeInterrupt(0x80, encodeInterrupt((uint32_t) _syscall));
+	writeInterrupt(0x20, encodeInterrupt((uint32_t) _int_preempt));
 	loadIDT(0x1000, idt);
+	_picinit();
 }
 
 void writeInterrupt(uint32_t index, uint64_t value)
